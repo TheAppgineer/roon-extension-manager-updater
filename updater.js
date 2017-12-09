@@ -17,7 +17,6 @@
 const name = "roon-extension-manager";
 const module_dir = 'node_modules/';
 const backup_dir = 'backup/';
-const perform_update = 66;
 
 function get_extension_root() {
     const exec = require('child_process').execSync;
@@ -39,7 +38,6 @@ function update() {
         exec('npm update -g ' + name, (err, stdout, stderr) => {
             if (err) {
                 console.error(stderr);
-                throw err;
             } else if (clean) {
                 process.exit();
             } else {
@@ -59,7 +57,6 @@ function backup(options, cb) {
 
         if (err) {
             console.error(err);
-            throw err;
         } else {
             const lines = data.split('\n');
 
