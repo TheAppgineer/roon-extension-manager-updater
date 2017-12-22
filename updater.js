@@ -14,70 +14,18 @@
 
 "use strict";
 
-const name = "roon-extension-manager";
-const module_dir = 'node_modules/';
-const backup_dir = 'backup/';
+const MANAGER_INDEX = 0;
+const MANAGER_NAME = "roon-extension-manager";
 
-function get_extension_root() {
-    const exec = require('child_process').execSync;
-    const stdout = exec('npm list -g --depth=0 ' + name);
+var ApiExtensionInstaller = require('node-api-extension-installer');
 
-    return stdout.toString().split('\n')[0] + '/';
-}
-
-function update() {
-    const extension_root = get_extension_root();
-    const cwd = extension_root + module_dir + name + '/';
-    const backup_file = extension_root + backup_dir + name + '.tar';
-    const options = { file: backup_file, cwd: cwd };
-
-    backup(options, (clean) => {
-        console.log('Inf: Updating: ' + name + '...');
-
-        const exec = require('child_process').exec;
-        exec('npm update -g ' + name, (err, stdout, stderr) => {
-            if (err) {
-                console.error(stderr);
-            } else if (clean) {
-                process.exit();
-            } else {
-                const tar = require('tar');
-                tar.extract(options, [], () => {
-                    process.exit();
-                });
-            }
-        });
-    });
-}
-
-function backup(options, cb) {
-    const fs = require('fs');
-    fs.readFile(options.cwd + '.npmignore', 'utf8', function(err, data) {
-        let globs = [];
-
-        if (err) {
-            console.error(err);
-        } else {
-            const lines = data.split('\n');
-
-            for (let i = 0; i < lines.length; i++) {
-                let line = lines[i].trim();
-
-                if (line && line != 'node_modules' && line[0] != '#') {
-                    if (fs.existsSync(options.cwd + line)) {
-                        globs.push(line);
-                    }
-                }
+var installer = new ApiExtensionInstaller({
+    updates_changed: function(values) {
+        for (let name in values) {
+            if (name == MANAGER_NAME) {
+                installer.update(MANAGER_INDEX);
+                break;
             }
         }
-
-        if (globs.length) {
-            const tar = require('tar');
-            tar.create(options, globs, cb);
-        } else if (cb) {
-            cb(true);
-        }
-    });
-}
-
-update();
+    }
+}, 'ignore', true);
