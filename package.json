@@ -6,7 +6,7 @@
     "author": "The Appgineer",
     "license": "Apache-2.0",
     "dependencies": {
-        "node-api-extension-installer": "github:TheAppgineer/node-api-extension-installer"
+        "node-api-extension-installer": "github:TheAppgineer/node-api-extension-installer#v0.4.0"
     },
     "repository": {
         "type": "git",
