@@ -1,12 +1,12 @@
 {
     "name": "roon-extension-manager-updater",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Updater for the Roon Extension Manager",
     "main": "updater.js",
     "author": "The Appgineer",
     "license": "Apache-2.0",
     "dependencies": {
-        "node-api-extension-installer": "github:TheAppgineer/node-api-extension-installer#v0.4.0"
+        "node-api-extension-installer": "github:TheAppgineer/node-api-extension-installer#v0.8.0"
     },
     "repository": {
         "type": "git",
