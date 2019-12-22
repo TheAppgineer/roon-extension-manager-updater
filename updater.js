@@ -1,4 +1,4 @@
-// Copyright 2017, 2018 The Appgineer
+// Copyright 2017, 2018, 2019 The Appgineer
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,9 +19,11 @@ const MANAGER_NAME = "roon-extension-manager";
 var ApiExtensionInstaller = require('node-api-extension-installer');
 
 var installer = new ApiExtensionInstaller({
-    updates_changed: function(values) {
-        for (let name in values) {
-            if (name == MANAGER_NAME) {
+    repository_changed: function() {
+        const actions = installer.get_actions(MANAGER_NAME).actions;
+
+        for (let i = 0; i < actions.length; i++) {
+            if (actions[i].title == 'Update') {
                 installer.update(MANAGER_NAME);
                 break;
             }
